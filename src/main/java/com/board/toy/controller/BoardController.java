@@ -26,8 +26,9 @@ public class BoardController {
 	
 	// main page
 	@GetMapping(value = "/")
-	public String main(Model model, List<BoardRequestDto> list) throws Exception {
+	public String main(Model model) throws Exception {
 		
+		List<BoardRequestDto> list;
 		list = service.select();
 		model.addAttribute("list", list);
 		
