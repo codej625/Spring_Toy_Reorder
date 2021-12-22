@@ -14,8 +14,13 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <title>Board</title>
 <style type="text/css">
-#write, #menu {
+#write{
 	text-align: right;
+}
+
+#footer {
+	padding: 15px;
+	overflow: auto;
 }
 
 .table {
@@ -32,6 +37,19 @@
 #reorder {
 	color: #ff2f3b;
 }
+
+#comment {
+	float: left;
+}
+
+#menu {
+	float: right;
+}
+
+.btn {
+	margin: 5px !important;
+}
+
 </style>
 </head>
 <body>
@@ -68,8 +86,14 @@
 				<!-- modal body -->
 				<div id="body" class="modal-body"></div>
 				<!-- modal footer -->
-				<div class="modal-footer">
+<!-- 			<div class="modal-footer"> -->
 <!-- 				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button> -->
+<!-- 			</div> -->
+				<div id="comment-body">
+				
+				</div>
+				<div id="footer">
+				
 				</div>
 			</div>
 		</div>
@@ -90,21 +114,35 @@
 				success : function onData(res) {
 					const title = res.content.title
 					const no    = res.content.no
-					const btn   = "<div id='menu'><input type='hidden' name='no'><button id='delete-btn'>삭제</button></div>";
+					let   btn   = "<span id='comment'><button id='comment-btn' class='btn'>댓글</button></span>"
+						  btn  += "<span id='menu'><button id='update-btn' class='btn'>수정</button>";
+						  btn  += "<button id='delete-btn' class='btn'>삭제</button></span>";
 					let   html  = "<table class='table' border='1'>";
-					      html += "<tr>";
-						  html += "<td>" + res.content.contents + "</td>";
-						  html += "</tr>";
+						  html += "<tr><td>" + res.content.contents + "</td></tr>";
 					      html += "</table>";
 					$(".modal-title").html(title);
 					$("#body").html(html);
-					$(".modal-footer").html(btn);
-					$("input[name=no]").val(no);
+					$("#footer").html(btn);
+					
+					$('#comment-btn').click(function() {
+						// 게시판(PK) 가져오기
+						alert(no)
+						// test 중
+						let html  = "<table class='table' border='1'>";
+						    html += "<tr><td>" + no + "</td></tr>";
+						    html += "</table>";
+						$('#comment-body').html(html);
+					});
 				},
 				error : function onError(error) {
 					console.error(error);
 				}
 			});
+		});
+	</script>
+	<script type="text/javascript">
+		$('.close').click(function() {
+			$('#comment-body').html('');
 		});
 	</script>
 	<script type="text/javascript">
