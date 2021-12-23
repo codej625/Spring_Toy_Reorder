@@ -89,10 +89,10 @@
 <!-- 			<div class="modal-footer"> -->
 <!-- 				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button> -->
 <!-- 			</div> -->
-				<div id="comment-body">
+				<div id="footer">
 				
 				</div>
-				<div id="footer">
+				<div id="comment-body">
 				
 				</div>
 			</div>
@@ -124,25 +124,30 @@
 					$("#body").html(html);
 					$("#footer").html(btn);
 					
+					$('#comment-body').hide();
 					$('#comment-btn').click(function() {
+						if($('#comment-body').css('display') == 'none'){
+							// test 중
+							let html  = "<table class='table' border='1'>";
+							    html += "<tr><td>" + no + "</td></tr>";
+							    html += "</table>";
+							$('#comment-body').html(html);
+							
+							// 1.일반적인 display show
+							// $('#comment-body').show();
+							
+							// 2.부드러운 display show 
+							$('#comment-body').slideDown();
+					      }else{
+					        $('#comment-body').hide();
+					      }
 						// 게시판(PK) 가져오기
-						alert(no)
-						// test 중
-						let html  = "<table class='table' border='1'>";
-						    html += "<tr><td>" + no + "</td></tr>";
-						    html += "</table>";
-						$('#comment-body').html(html);
 					});
 				},
 				error : function onError(error) {
 					console.error(error);
 				}
 			});
-		});
-	</script>
-	<script type="text/javascript">
-		$('.close').click(function() {
-			$('#comment-body').html('');
 		});
 	</script>
 	<script type="text/javascript">

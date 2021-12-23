@@ -3,8 +3,14 @@
 <mapper namespace="board">
 
 	<select id="select" resultType="BoardRequest">
-		SELECT *
-		FROM   board
+		SELECT A.no
+		       , title
+		       , contents
+		       , count(B.no) AS reorder
+		FROM   board A LEFT JOIN comment B
+		ON     A.no = B.no
+		GROUP  BY A.no
+		ORDER  BY A.no
 	</select>
 
 	<insert id="insert" parameterType="BoardRequest">
