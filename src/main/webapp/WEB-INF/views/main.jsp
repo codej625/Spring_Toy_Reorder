@@ -133,15 +133,19 @@
 	                            dataType: 'json',
 	                            success: function onData(res) {
 	                                let html = "";
-	                                for (let i = 0; i < res.commentContent.length; i++) {
 	                                    html += "<table class='table' border='1'>";
-	                                    html += "<tr><td>" + res.commentContent[i].commentVo.contents + "</td></tr>";
-	                                    html += "</table>";
+	                                for (let i = 0; i < res.commentContent.length; i++) {
+	                                    html += "<tr><td colspan='2'>" + res.commentContent[i].commentVo.contents + "</td>";
 	                                }
+	                                    html += "<tr><td><textarea id='text' style='width: 500px; height: 100px;''></textarea>";
+	                                    html += "<input id='parent-key' type='hidden' value=''>";
+	                                    html += "<button id='comment' class='btn' style='float: right;' onclick='comment();'>등록</button></td></tr>";
+	                                    html += "</table>";
 	                                $('#comment-body').html(html);
+	                                $('#parent-key').val(num);
+	                                
 	                                // 1.일반적인 display show
 	                                // $('#comment-body').show();
-
 	                                // 2.부드러운 display show 
 	                                $('#comment-body').slideDown();
 	                            },
@@ -161,6 +165,40 @@
 	            }
 	        });
 	    });
+	    function comment() {
+		    if ($("#text").val() == "") {
+		        alert("내용을 입력해주세요");
+		        $("#text").focus();
+		        return false;
+		    }
+		    const contents = $('#text').val();
+		    const parent = $('#parent-key').val();
+		    $.ajax({
+	            url: '/contents',
+	            type: 'post',
+	            data: { 'contents' : contents, 'parent' : parent, 'no' : parent},
+	            dataType: 'json',
+	            success: function onData(res) {
+					alert(res.result)
+	            	$('#text').val('');
+					let html = "";
+                    html += "<table class='table' border='1'>";
+	                for (let i = 0; i < res.commentContent.length; i++) {
+	                    html += "<tr><td colspan='2'>" + res.commentContent[i].commentVo.contents + "</td>";
+	                }
+                    html += "<tr><td><textarea id='text' style='width: 500px; height: 100px;''></textarea>";
+                    html += "<input id='parent-key' type='hidden' value=''>";
+                    html += "<button id='comment' class='btn' style='float: right;' onclick='comment();'>등록</button></td></tr>";
+                    html += "</table>";
+                	$('#comment-body').html(html);
+	            },
+	            error: function onError(error) {
+	                console.error(error);
+	            }
+        	});
+		    return true;
+		}
+		    
     </script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -170,6 +208,5 @@
 			}
 		});
 	</script>
-	
 </body>
 </html>

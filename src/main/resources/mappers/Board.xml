@@ -43,6 +43,15 @@
 		)
 	</insert>
 	
+	<insert id="insertComment" parameterType="com.board.toy.request.CommentVo">
+		INSERT INTO comment
+		VALUES (
+			NEXTVAL('board_seq')
+			, #{parent}
+			, #{contents}
+		)
+	</insert>
+	
 	<select id="content" parameterType="BoardRequest" resultType="BoardRequest">
 		SELECT *
 		FROM   board

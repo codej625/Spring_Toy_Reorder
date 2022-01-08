@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.board.toy.dao.BoardDao;
 import com.board.toy.request.BoardRequestDto;
+import com.board.toy.request.CommentVo;
 
 @Repository
 public class BoardDaoImpl implements BoardDao {
@@ -47,8 +48,14 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public List<BoardRequestDto> commentContent(BoardRequestDto requestBoard) throws Exception {
-		System.out.println("input->" + requestBoard.getNo());
+		
 		return session.selectList("board.commentContent", requestBoard);
 	}
 
+	@Override
+	public int contents(CommentVo commentVo) throws Exception {
+		
+		return session.insert("board.insertComment", commentVo);
+	}
+	
 }

@@ -7,11 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.board.toy.dao.BoardDao;
 import com.board.toy.request.BoardRequestDto;
+import com.board.toy.request.CommentVo;
 import com.board.toy.service.BoardService;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-	
+
 	// 생성자 주입방식 외에 많이 사용되는 필드 주입방식 사용
 	@Autowired
 	BoardDao boardDao;
@@ -37,6 +38,12 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardRequestDto> commentContent(BoardRequestDto requestBoard) throws Exception {
 		return boardDao.commentContent(requestBoard);
+	}
+
+	@Override
+	public int contents(CommentVo commentVo) throws Exception {
+		// TODO Auto-generated method stub
+		return boardDao.contents(commentVo);
 	}
 
 }

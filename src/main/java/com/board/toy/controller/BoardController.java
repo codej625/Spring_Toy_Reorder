@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.board.toy.request.BoardRequestDto;
+import com.board.toy.request.CommentVo;
 import com.board.toy.service.BoardService;
 
 @Controller
@@ -56,8 +57,8 @@ public class BoardController {
 	}
 	
 	// board content
+	@ResponseBody 
 	@GetMapping(value = "/content")
-	@ResponseBody
 	public Map<String, Object> contnet(BoardRequestDto requestBoard) throws Exception{
 		Map<String, Object> content = new HashMap<String, Object>();
 		requestBoard = service.content(requestBoard);
@@ -67,16 +68,29 @@ public class BoardController {
 	}
 		
 	// comment content
-	@GetMapping(value = "/commentContent")
 	@ResponseBody
+	@GetMapping(value = "/commentContent")
 	public Map<String, Object> commentContent(BoardRequestDto requestBoard) throws Exception {
 		Map<String, Object> commentContent = new HashMap<String, Object>();
 		List<BoardRequestDto> test = null;
 		
 		test = service.commentContent(requestBoard);
-		
 		System.out.println(test.get(0).getCommentVo().getContents());
 		commentContent.put("commentContent", test);
+
+		return commentContent;
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "/contents")
+	public Map<String, Object> Contents(CommentVo commentVo, BoardRequestDto requestBoard) throws Exception {
+		Map<String, Object> commentContent = new HashMap<String, Object>();
+		List<BoardRequestDto> test = null;
+		int result = 0;
+		result = service.contents(commentVo);
+		test = service.commentContent(requestBoard);
+		commentContent.put("commentContent", test);
+		commentContent.put("result", result > 0 ? "작성 완료" : "작성 실패");
 
 		return commentContent;
 	}
