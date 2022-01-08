@@ -7,11 +7,14 @@ import lombok.Setter;
 @Setter
 public class BoardRequestDto {
 
-	private int    no;
-	private String title;
-	private String contents;
+	private Integer no;
+	private String  title;
+	private String  content;
 	
-	// 댓글 갯수 저장용 field
-	private int    reorder;
+	// 댓글 count field
+	private int    count;
+	
+	// join 
+	private CommentVo commentVo;
 
 }

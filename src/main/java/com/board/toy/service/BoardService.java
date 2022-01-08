@@ -11,4 +11,6 @@ public interface BoardService {
 	public List<BoardRequestDto> select() throws Exception;
 
 	public BoardRequestDto content(BoardRequestDto requestBoard) throws Exception;
+	
+	public List<BoardRequestDto> commentContent(BoardRequestDto requestBoard) throws Exception;
 }

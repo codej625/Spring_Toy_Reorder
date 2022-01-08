@@ -11,4 +11,6 @@ public interface BoardDao {
 	public int write(BoardRequestDto requestBoard) throws Exception;
 
 	public BoardRequestDto content(BoardRequestDto requestBoard) throws Exception;
+	
+	public List<BoardRequestDto> commentContent(BoardRequestDto requestBoard) throws Exception;
 }

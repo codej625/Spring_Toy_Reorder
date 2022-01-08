@@ -62,7 +62,7 @@
 			<c:forEach var="item" items="${list}">
 				<tr>
 					<td class="num" data-target="#layerpop" data-toggle="modal" no="${item.no}">${item.no}</td>
-					<td>${item.title} <span id="reorder">[${item.reorder}]</span></td>
+					<td>${item.title} <span id="reorder">[${item.count}]</span></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -99,57 +99,69 @@
 		</div>
 	</div>
 	
-<!-- 	<button id="" delete="" onclick="();"></button> -->
-<!-- 	<input id="delete" type="hidden"> -->
-
 	<script type="text/javascript">
-		$('.num').click(function() {
-			const num = $(this).attr('no');
+	
+	    $('.num').click(function () {
+	        const num = $(this).attr('no');
+	        // 첫번째 ajax 실행
+	        $.ajax({
+	            url: '/content',
+	            type: 'GET',
+	            data: { 'no': num },
+	            dataType: 'json',
+	            success: function onData(res) {
+	                const title = res.content.title
+	                const no = res.content.no
+	                let btn = "<span id='comment'><button id='comment-btn' class='btn'>댓글</button></span>"
+	                btn += "<span id='menu'><button id='update-btn' class='btn'>수정</button>";
+	                btn += "<button id='delete-btn' class='btn'>삭제</button></span>";
+	                let html = "<table class='table' border='1'>";
+	                html += "<tr><td>" + res.content.content + "</td></tr>";
+	                html += "</table>";
+	                $(".modal-title").html(title);
+	                $("#body").html(html);
+	                $("#footer").html(btn);
+	                $('#comment-body').hide();
 
-			$.ajax({
-				url : '/content',
-				type : 'GET',
-				data : {'no' : num},
-				dataType : 'json',
-				success : function onData(res) {
-					const title = res.content.title
-					const no    = res.content.no
-					let   btn   = "<span id='comment'><button id='comment-btn' class='btn'>댓글</button></span>"
-						  btn  += "<span id='menu'><button id='update-btn' class='btn'>수정</button>";
-						  btn  += "<button id='delete-btn' class='btn'>삭제</button></span>";
-					let   html  = "<table class='table' border='1'>";
-						  html += "<tr><td>" + res.content.contents + "</td></tr>";
-					      html += "</table>";
-					$(".modal-title").html(title);
-					$("#body").html(html);
-					$("#footer").html(btn);
-					
-					$('#comment-body').hide();
-					$('#comment-btn').click(function() {
-						if($('#comment-body').css('display') == 'none'){
-							// test 중
-							let html  = "<table class='table' border='1'>";
-							    html += "<tr><td>" + no + "</td></tr>";
-							    html += "</table>";
-							$('#comment-body').html(html);
-							
-							// 1.일반적인 display show
-							// $('#comment-body').show();
-							
-							// 2.부드러운 display show 
-							$('#comment-body').slideDown();
-					      }else{
-					        $('#comment-body').hide();
-					      }
-						// 게시판(PK) 가져오기
-					});
-				},
-				error : function onError(error) {
-					console.error(error);
-				}
-			});
-		});
-	</script>
+	                $('#comment-btn').click(function () {
+	                    if ($('#comment-body').css('display') == 'none') {
+	                    	// 두번째 ajax 실행
+	                        $.ajax({
+	                            url: '/commentContent',
+	                            type: 'GET',
+	                            data: { 'no': num },
+	                            dataType: 'json',
+	                            success: function onData(res) {
+	                                let html = "";
+	                                for (let i = 0; i < res.commentContent.length; i++) {
+	                                    html += "<table class='table' border='1'>";
+	                                    html += "<tr><td>" + res.commentContent[i].commentVo.contents + "</td></tr>";
+	                                    html += "</table>";
+	                                }
+	                                $('#comment-body').html(html);
+	                                // 1.일반적인 display show
+	                                // $('#comment-body').show();
+
+	                                // 2.부드러운 display show 
+	                                $('#comment-body').slideDown();
+	                            },
+	                         	// 두번째 ajax error
+	                            error: function onError(error) {
+	                                console.error(error);
+	                            }
+	                        });
+	                    } else {
+	                        $('#comment-body').hide();
+	                    }
+	                });
+	            },
+	            // 첫번째 ajax error
+	            error: function onError(error) {
+	                console.error(error);
+	            }
+	        });
+	    });
+    </script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			const resp = ${result};

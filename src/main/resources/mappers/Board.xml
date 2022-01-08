@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
+	                 
+	<resultMap type="com.board.toy.request.CommentVo" id="commentVo">
+		<result     property="comment_no" column="comment_no"/>
+		<result     property="parent"     column="parent"/>
+		<result     property="contents"   column="contents"/>
+	</resultMap>
 
+	<resultMap type="com.board.toy.request.BoardRequestDto" id="boardVo">
+		<result     property="no"        column="no"/>
+		<result     property="title"     column="title"/>
+		<result     property="content"   column="content"/>
+		<collection property="commentVo" resultMap="commentVo"/>
+	</resultMap>
+	
 	<select id="select" resultType="BoardRequest">
-		SELECT A.no
-		       , title
-		       , contents
-		       , count(B.no) AS reorder
-		FROM   board A LEFT JOIN comment B
-		ON     A.no = B.no
-		GROUP  BY A.no
-		ORDER  BY A.no
+		SELECT no
+			   , title 
+			   , content
+			   , count(parent) AS count
+		FROM  board A LEFT JOIN comment B
+		ON       no = parent
+		GROUP BY no
+		ORDER BY no DESC
+	</select>
+	
+	<select id="commentContent" parameterType="com.board.toy.request.BoardRequestDto" resultMap="boardVo">
+		SELECT B.contents
+		FROM   board A ,comment B
+		WHERE  no = parent
+		AND    parent = #{no}
+		ORDER  BY comment_no DESC
 	</select>
 
 	<insert id="insert" parameterType="BoardRequest">
@@ -19,7 +40,7 @@
 			NEXTVAL('board_seq')
 			, #{title}
 			, #{contents}
-			)
+		)
 	</insert>
 	
 	<select id="content" parameterType="BoardRequest" resultType="BoardRequest">

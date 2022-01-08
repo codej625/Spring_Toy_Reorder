@@ -30,6 +30,7 @@ public class BoardController {
 		
 		List<BoardRequestDto> list;
 		list = service.select();
+
 		model.addAttribute("list", list);
 		
 		return "main";
@@ -58,11 +59,25 @@ public class BoardController {
 	@GetMapping(value = "/content")
 	@ResponseBody
 	public Map<String, Object> contnet(BoardRequestDto requestBoard) throws Exception{
-		
 		Map<String, Object> content = new HashMap<String, Object>();
 		requestBoard = service.content(requestBoard);
 		content.put("content", requestBoard);
 		
 		return content;
+	}
+		
+	// comment content
+	@GetMapping(value = "/commentContent")
+	@ResponseBody
+	public Map<String, Object> commentContent(BoardRequestDto requestBoard) throws Exception {
+		Map<String, Object> commentContent = new HashMap<String, Object>();
+		List<BoardRequestDto> test = null;
+		
+		test = service.commentContent(requestBoard);
+		
+		System.out.println(test.get(0).getCommentVo().getContents());
+		commentContent.put("commentContent", test);
+
+		return commentContent;
 	}
 }

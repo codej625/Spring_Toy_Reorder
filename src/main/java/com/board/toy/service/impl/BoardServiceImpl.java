@@ -34,4 +34,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.content(requestBoard);
 	}
 
+	@Override
+	public List<BoardRequestDto> commentContent(BoardRequestDto requestBoard) throws Exception {
+		return boardDao.commentContent(requestBoard);
+	}
+
 }

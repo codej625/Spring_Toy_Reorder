@@ -45,4 +45,10 @@ public class BoardDaoImpl implements BoardDao {
 		return session.selectOne("board.content", requestBoard);
 	}
 
+	@Override
+	public List<BoardRequestDto> commentContent(BoardRequestDto requestBoard) throws Exception {
+		System.out.println("input->" + requestBoard.getNo());
+		return session.selectList("board.commentContent", requestBoard);
+	}
+
 }
