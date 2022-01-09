@@ -57,5 +57,11 @@ public class BoardDaoImpl implements BoardDao {
 		
 		return session.insert("board.insertComment", commentVo);
 	}
+
+	@Override
+	public int contentsReorder(CommentVo commentVo) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

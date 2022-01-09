@@ -46,4 +46,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.contents(commentVo);
 	}
 
+	@Override
+	public int contentsReorder(CommentVo commentVo) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

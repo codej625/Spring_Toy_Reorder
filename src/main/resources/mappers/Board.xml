@@ -20,6 +20,7 @@
 			   , title 
 			   , content
 			   , count(parent) AS count
+			   , ROW_NUMBER() OVER(ORDER BY no) AS rowNum
 		FROM  board A LEFT JOIN comment B
 		ON       no = parent
 		GROUP BY no
@@ -39,7 +40,7 @@
 		VALUES (
 			NEXTVAL('board_seq')
 			, #{title}
-			, #{contents}
+			, #{content}
 		)
 	</insert>
 	

@@ -16,4 +16,6 @@ public interface BoardDao {
 	public List<BoardRequestDto> commentContent(BoardRequestDto requestBoard) throws Exception;
 	
 	public int contents(CommentVo commentVo) throws Exception;
+	
+	public int contentsReorder(CommentVo commentVo) throws Exception;
 }

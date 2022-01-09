@@ -15,7 +15,7 @@
 		</tr>
 		<tr>
 			<td>제목<input type="text" name="title"></td>
-			<td>내용<input type="text" name="contents"></td>
+			<td>내용<input type="text" name="content"></td>
 		</tr>
 		<tr>
 			<td><input type="submit" value="저장"></td>

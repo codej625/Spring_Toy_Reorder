@@ -30,8 +30,8 @@
 	margin-top: auto;
 }
 
-.num:hover {
-	color: aqua;
+.text:hover {
+	color: pink;
 }
 
 #reorder {
@@ -61,8 +61,11 @@
 			</tr>
 			<c:forEach var="item" items="${list}">
 				<tr>
-					<td class="num" data-target="#layerpop" data-toggle="modal" no="${item.no}">${item.no}</td>
-					<td>${item.title} <span id="reorder">[${item.count}]</span></td>
+					<td>${item.rowNum}</td>
+					<td class="text" no="${item.no}" data-target="#layerpop" data-toggle="modal">
+						${item.title} 
+						<span id="reorder">[${item.count}]</span>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -101,7 +104,7 @@
 	
 	<script type="text/javascript">
 	
-	    $('.num').click(function () {
+	    $(".text").click(function () {
 	        const num = $(this).attr('no');
 	        // 첫번째 ajax 실행
 	        $.ajax({
@@ -152,6 +155,7 @@
 	                         	// 두번째 ajax error
 	                            error: function onError(error) {
 	                                console.error(error);
+	                                alert("댓글이 없습니다.")
 	                            }
 	                        });
 	                    } else {
@@ -192,6 +196,7 @@
                     html += "</table>";
                 	$('#comment-body').html(html);
 	            },
+	            // 댓글의 ajax error
 	            error: function onError(error) {
 	                console.error(error);
 	            }
